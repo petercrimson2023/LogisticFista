@@ -1,0 +1,240 @@
+current_path <- getwd()
+dir_list = list.files(current_path, full.names = TRUE)
+
+
+class_1_df <- data.frame(
+  lambda = numeric(),
+  F1 = numeric(),
+  balanced_accuracy = numeric(),
+  n_list = numeric(),
+  Iteration_times = numeric(),
+  final_loss = numeric()
+)
+
+class_3_df <- data.frame(
+  lambda = numeric(),
+  F1 = numeric(),
+  balanced_accuracy = numeric(),
+  n_list = numeric(),
+  Iteration_times = numeric(),
+  final_loss = numeric()
+)
+
+class_4_df <- data.frame(
+  lambda = numeric(),
+  F1 = numeric(),
+  balanced_accuracy = numeric(),
+  n_list = numeric(),
+  Iteration_times = numeric(),
+  final_loss = numeric()
+)
+
+class_5_df <- data.frame(
+  lambda = numeric(),
+  F1 = numeric(),
+  balanced_accuracy = numeric(),
+  n_list = numeric(),
+  Iteration_times = numeric(),
+  final_loss = numeric()
+)
+
+class_6_df <- data.frame(
+  lambda = numeric(),
+  F1 = numeric(),
+  balanced_accuracy = numeric(),
+  n_list = numeric(),
+  Iteration_times = numeric(),
+  final_loss = numeric()
+)
+
+class_9_df <- data.frame(
+  lambda = numeric(),
+  F1 = numeric(),
+  balanced_accuracy = numeric(),
+  n_list = numeric(),
+  Iteration_times = numeric(),
+  final_loss = numeric()
+)
+
+class_combined_df <- data.frame(
+  lambda = numeric(),
+  F1 = numeric(),
+  balanced_accuracy = numeric(),
+  n_list = numeric(),
+  Iteration_times = numeric(),
+  final_loss = numeric()
+)
+
+
+
+
+for (dir_name in dir_list[1:length(dir_list)-1]) {
+  path <- dir_name
+  print(path)
+  # 初始化一个向量来存储提取的参数值
+  param_value <- numeric(length(path))
+  
+  # 使用循环处理每个路径
+  
+  # 使用正则表达式提取参数值
+  match <- regexpr("[0]+\\.[0-9]+", path)
+  if (match != -1) {
+    param_value <-
+      as.numeric(substr(path, match, match + attr(match, "match.length") - 1))
+  }
+  
+  print(param_value)
+
+load(file=file.path(path,"result.RData"))
+betas = result$theta
+
+final_loss = result$loss[length(result$loss)]
+Iteration_times=length(result$loss)-1
+n_list = list()
+
+confusion_matrix = read.csv(file=file.path(path,"confusion_matrix.csv"))
+F1 = confusion_matrix$F1
+balanced_accuracy = confusion_matrix$Balanced.Accuracy
+for (i in 1:7)
+{
+  n_list[length(n_list)+1] = sum(abs(betas[,i])>1e-7)
+}
+n_list=unlist(n_list)
+
+class_1_df = rbind(class_1_df, 
+                   data.frame(param_value,
+                              F1[1],
+                              balanced_accuracy[1],
+                              n_list[1],
+                              Iteration_times,
+                              final_loss))
+
+# 添加到 class_3_df 中
+class_3_df = rbind(class_3_df,
+                   data.frame(param_value,
+                              F1[2],
+                              balanced_accuracy[2],
+                              n_list[2],
+                              Iteration_times,
+                              final_loss))
+
+# 添加到 class_4_df 中
+class_4_df = rbind(class_4_df,
+                   data.frame(param_value,
+                              F1[3],
+                              balanced_accuracy[3],
+                              n_list[3],
+                              Iteration_times,
+                              final_loss))
+
+# 添加到 class_5_df 中
+class_5_df = rbind(class_5_df,
+                   data.frame(param_value,
+                              F1[4],
+                              balanced_accuracy[4],
+                              n_list[4],
+                              Iteration_times,
+                              final_loss))
+
+# 添加到 class_6_df 中
+class_6_df = rbind(class_6_df,
+                   data.frame(param_value,
+                              F1[5],
+                              balanced_accuracy[5],
+                              n_list[5],
+                              Iteration_times,
+                              final_loss))
+
+# 添加到 class_9_df 中
+class_9_df = rbind(class_9_df,
+                   data.frame(param_value,
+                              F1[6],
+                              balanced_accuracy[6],
+                              n_list[6],
+                              Iteration_times,
+                              final_loss))
+
+# 添加到 class_combined_df 中
+class_combined_df = rbind(class_combined_df,
+                          data.frame(param_value,
+                                     F1[7],
+                                     balanced_accuracy[7],
+                                     n_list[7],
+                                     Iteration_times,
+                                     final_loss))
+cat("finish",param_value,"\n")
+rm(result)
+}
+
+
+colnames(class_1_df) <- c("param_value", "F1", "balanced_accuracy", "n_list", "Iteration_times", "final_loss")
+colnames(class_3_df) <- c("param_value", "F1", "balanced_accuracy", "n_list", "Iteration_times", "final_loss")
+colnames(class_4_df) <- c("param_value", "F1", "balanced_accuracy", "n_list", "Iteration_times", "final_loss")
+colnames(class_5_df) <- c("param_value", "F1", "balanced_accuracy", "n_list", "Iteration_times", "final_loss")
+colnames(class_6_df) <- c("param_value", "F1", "balanced_accuracy", "n_list", "Iteration_times", "final_loss")
+colnames(class_9_df) <- c("param_value", "F1", "balanced_accuracy", "n_list", "Iteration_times", "final_loss")
+colnames(class_combined_df) <- c("param_value", "F1", "balanced_accuracy", "n_list", "Iteration_times", "final_loss")
+
+
+library(ggplot2)
+library(patchwork)
+
+
+class_plot = function(class_df,file_name)
+{
+g1 = ggplot(class_df, aes(x = param_value, y =F1)) +
+  geom_line() +
+  geom_point() +
+  labs(title = "F1 vs lambda",
+       x = "lambda",
+       y = "F1")
+
+g2 = ggplot(class_df, aes(x = param_value, y =balanced_accuracy)) +
+  geom_line() +
+  geom_point() +
+  labs(title = "balanced_accuracy vs lambda",
+       x = "lambda",
+       y = "balanced_accuracy")
+
+g3 = ggplot(class_df, aes(x = param_value, y =n_list)) +
+  geom_line() +
+  geom_point() +
+  labs(title = "n_list vs lambda",
+       x = "lambda",
+       y = "n_list")
+g4 = ggplot(class_df,aes(x=param_value,y=Iteration_times))+
+  geom_line()+
+  geom_point()+
+  labs(title = "Iteration_times vs lambda",
+       x = "lambda",
+       y = "Iteration_times")
+
+g5 = ggplot(class_df,aes(x=param_value,y=final_loss))+
+  geom_line()+
+  geom_point()+
+  labs(title = "final_loss vs lambda",
+       x = "lambda",
+       y = "final_loss")
+
+g_finale = g1+g2+g3+g4+g5+plot_layout(ncol = 3)
+
+ggsave(paste0(file_name,".png"),plot=g_finale, width = 10, height = 10, dpi = 300)
+
+}
+
+class_plot(class_1_df,"class_1")
+class_plot(class_3_df,"class_3")
+class_plot(class_4_df,"class_4")
+class_plot(class_5_df,"class_5")
+class_plot(class_6_df,"class_6")
+class_plot(class_9_df,"class_9")
+class_plot(class_combined_df,"class_combined")
+
+
+
+
+
+
+
+
+
