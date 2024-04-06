@@ -89,40 +89,40 @@ plot_function=function(result)
   p = length(result$theta[,1])
 
   g1 = ggplot(data.frame(x = 1:p, y = result$theta[, 1]), aes(x = x, y =
-                                                                    y)) +
+                                                                y)) +
     geom_point() +
     ggtitle("acinar")
-  
+
   g2 = ggplot(data.frame(x = 1:p, y = result$theta[, 2]), aes(x = x, y =
-                                                                    y)) +
+                                                                y)) +
     geom_point() +
     ggtitle("alpha")
-  
+
   g3 = ggplot(data.frame(x = 1:p, y = result$theta[, 3]), aes(x = x, y =
-                                                                    y)) +
+                                                                y)) +
     geom_point() +
     ggtitle("beta")
-  
+
   g4 = ggplot(data.frame(x = 1:p, y = result$theta[, 4]), aes(x = x, y =
-                                                                    y)) +
+                                                                y)) +
     geom_point() +
     ggtitle("delta")
-  
+
   g5 = ggplot(data.frame(x = 1:p, y = result$theta[, 5]), aes(x = x, y =
-                                                                    y)) +
+                                                                y)) +
     geom_point() +
     ggtitle("ductal")
-  
+
   g6 = ggplot(data.frame(x = 1:p, y = result$theta[, 6]), aes(x = x, y =
-                                                                    y)) +
+                                                                y)) +
     geom_point() +
     ggtitle("gamma")
-  
+
   g7 = ggplot(data.frame(x = 1:p, y = result$theta[, 7]), aes(x = x, y =
-                                                                    y)) +
+                                                                y)) +
     geom_point() +
     ggtitle("Class combined")
-  
+
   g8 = ggplot(data.frame(x = 2:length(result$loss), loss = result$loss[2:length(result$loss)]),
               aes(x = x, y = loss)) +
     geom_line() +

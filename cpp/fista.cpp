@@ -1,5 +1,5 @@
 #include <RcppArmadillo.h>
-#include "softmax_L1.h"
+#include "../cpp/softmax_L1.h"
 
 using namespace arma;
 // [[Rcpp::depends(RcppArmadillo)]]
