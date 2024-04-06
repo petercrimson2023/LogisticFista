@@ -1,0 +1,35 @@
+---
+title: "Untitled"
+author: "Bulun Te"
+date: "2023-12-05"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+
+$$ L(x)= -\frac{1}{n} \sum_{i=1}^n \sum_{j=1}^k I\{ z_i=j \} ln(\frac{e^{x_j^Th_i}}{\sum_{l=1}^k x_l^Th_i})+\lambda \sum_{i=1}^k ||x_i||_1 $$
+
+$$ \nabla f(x_k)+L(x_{k+1}-x_k)+\partial g =0 $$
+
+$$ x_{k+1}=p_{\lambda,\frac{1}{L}}(x_k)=(|u|-\frac{\lambda}{L})_{+}sgn(u) \\ u = x_k - \frac{1}{L}\nabla f(x_k)  $$
+
+
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
